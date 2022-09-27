@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.util.*;
 
 public class Misc {
@@ -25,10 +26,13 @@ public class Misc {
         for (int i = 0; i < A.length; i++) {
             maxLength[i] = 1;
             parent[i] = -1;
-            for (int j = 0; j < i; j++) {
+            for (int j = i - 1; j >= 0; j--) {
                 if (A[i] >= A[j] && maxLength[i] < maxLength[j] + 1) {
                     parent[i] = j;
                     maxLength[i] = maxLength[j] + 1;
+                }
+                if (maxLength[i] > j) {
+                    break;
                 }
             }
             if (maxLength[maxIndex] < maxLength[i]) {
@@ -118,4 +122,90 @@ public class Misc {
         }
         return lo;
     }
+
+    private static int ternarySearch(int[] A) {
+        int lo = 0;
+        int hi = A.length;
+        while (lo < hi) {
+            int lm = (hi - lo) / 3;
+            int hm = lo + 2 * lm;
+            lm += lo;
+            int lv = A[lm];
+            int hv = A[hm];
+            if (lv < hv) {
+                hi = hm;
+            } else {
+                lo = lm + 1;
+            }
+        }
+        return lo;
+    }
+
+    public static BigInteger fib(int n) {
+        BigInteger[][] matrix = new BigInteger[][]{{BigInteger.ONE, BigInteger.ONE}, {BigInteger.ONE, BigInteger.ZERO}};
+//        long[][] matrix = new long[][]{{1, 1}, {1, 0}};
+        matrix = fastExpo(matrix, n);
+        return matrix[1][0];
+    }
+
+    public static BigInteger[][] fastExpo(BigInteger[][] matrix, long n) {
+        BigInteger[][] res = new BigInteger[matrix.length][matrix.length];
+        for (int i = 0; i < res.length; i++) {
+            Arrays.fill(res[i], BigInteger.ZERO);
+            res[i][i] = BigInteger.ONE;
+        }
+        while (n != 0) {
+            if ((n & 1) == 1) {
+                res = multiply(res, matrix);
+            }
+            n >>= 1;
+            matrix = multiply(matrix, matrix);
+        }
+        return res;
+    }
+
+    public static BigInteger[][] multiply(BigInteger[][] a, BigInteger[][] b) {
+        BigInteger[][] x = new BigInteger[a.length][b[0].length];
+        for (int i = 0; i < a.length; i++) {
+            for (int k = 0; k < b[0].length; k++) {
+                x[i][k] = BigInteger.ZERO;
+                for (int j = 0; j < a.length; j++) {
+                    x[i][k] = x[i][k].add(a[i][j].multiply(b[j][k]));
+                }
+            }
+        }
+        return x;
+    }
+
+    public static int[][] multiply(int[][] a, int[][] b) {
+        int[][] x = new int[a.length][b[0].length];
+        for (int i = 0; i < a.length; i++) {
+            for (int k = 0; k < b[0].length; k++) {
+                x[i][k] = 0;
+                for (int j = 0; j < a.length; j++) {
+                    x[i][k] += a[i][j] * b[j][k];
+                }
+            }
+        }
+        return x;
+    }
+
+    /**
+     * Multiplies a range of matrices together from A based on the ordering provided by the matrix s.
+     *
+     * @param A the list of matrices
+     * @param s the order of multiplications to perform
+     * @param i the index of the first element in the range
+     * @param j the index of the last element in the range
+     * @return the resulting matrix
+     */
+    private static int[][] MatrixChainMultiply(int[][][] A, int[][] s, int i, int j) {
+        if (i == j) {
+            return A[i];
+        }
+        return multiply(MatrixChainMultiply(A, s, i, s[i][j]),
+                MatrixChainMultiply(A, s, s[i][j] + 1, j));
+    }
+
+
 }

@@ -63,5 +63,16 @@ public class LinearAlgebra {
 
     }
 
+    // for square matrices
+    public static int[][] rotate(int[][] y) {
+        int[][] x = new int[y.length][y.length];
+        for (int i = 0; i < y.length; i++) {
+            for (int j = 0; j < y.length; j++) {
+                x[i][j] = y[j][y.length - i - 1];
+            }
+        }
+        return x;
+    }
+
 
 }

@@ -56,5 +56,4 @@ public class Trie<E> {
         }
         return cur == null ? null : cur.data;
     }
-
 }

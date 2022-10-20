@@ -6,7 +6,6 @@ public class JavaTricks {
         Arrays.sort(list, Comparator.comparingInt(o -> o[0]));
         PriorityQueue<int[]> queue = new PriorityQueue<>(Comparator.comparingInt(o->o[0]));
 
-
     }
 
 

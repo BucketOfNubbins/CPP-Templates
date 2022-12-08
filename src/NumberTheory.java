@@ -4,8 +4,9 @@ import java.util.HashMap;
 public class NumberTheory {
 
     public static void main(String[] args) {
-        System.out.println(choose(42069 , 1337, (int) (1e9 + 7)));
+        System.out.println(sqrt(1, 5));
     }
+
 
     static long crt(long a, long m, long b, long n) {
         if (n > m) return crt(b, n, a, m);
@@ -13,6 +14,7 @@ public class NumberTheory {
         long g = out[0];
         long x = out[1];
         long y = out[2];
+        System.out.println(Arrays.toString(out));
         if ((a - b) % g != 0) {
             throw new IllegalArgumentException("No Solution");
         }
@@ -43,6 +45,7 @@ public class NumberTheory {
         long x = 1, y = 0, x1 = 0, y1 = 1, a1 = a, b1 = b;
         long t;
         while (b1 != 0) {
+//            System.out.printf("%d & %d & %d & %d & %d & %d \\\\\n", x, y, x1, y1, a1, b1);
             long q = a1 / b1;
             t = x1;
             x1 = x - q * x1;
@@ -54,9 +57,11 @@ public class NumberTheory {
             b1 = a1 - q * b1;
             a1 = t;
         }
-        return new long[]{a1, x, y};
+//        System.out.printf("%d & %d & %d & %d & %d & %d \n", x, y, x1, y1, a1, b1);
+        return new long[]{a1, (x + b) % b, y};
     }
 
+    // calculates the greatest common divisor of a and b
     static long rGcd(long a, long b) {
         return b == 0 ? a : rGcd(b, a % b);
     }

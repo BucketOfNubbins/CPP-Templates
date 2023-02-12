@@ -1,0 +1,151 @@
+Math:
+KACTL
++ Cramer's rule (2.1)
++ Trig Identities (2.3)
++ Triangles (2.4.1)
++ Spherical Coordinates (2.4.3)
+X Derivatives (2.5) - Low Priority
++ Sums (2.6)
++ Discrete Distributions (2.8.1)
+X Continuous Distributions (2.8.2) - Low Priority
++ Derangements (6.1.3)
++ Partition Function (6.2.1)
++ Bell Numbers (6.3.5)
++ Catalan Numbers (6.3.7)
+
+Stanford top lvl dir Notebook
++ Primes (6.4)
+
+imeplusplus
++ Combinatorics (Math Extra 9.1)
++ Lucas Theorem (Math Extra 9.2)
++ Stirling Numbers (Math Extra 9.3)
++ Burnsides (Math Extra 9.4) - Low Priority
+
+Extra
++ Bayes' Theorem
++ hockey stick identity - https://cdn.discordapp.com/attachments/957058986727833752/975861686223401000/unknown.png
++ Prime Number Theorem - https://cdn.discordapp.com/attachments/957058986727833752/975857768667971614/unknown.png
++ Number of primes under some value (up to 10\^20)- https://cdn.discordapp.com/attachments/957058986727833752/975857067065770004/unknown.png
++ Planar Graph Formula
+=======================================================================
+Strings                         Collin
++ Suffix Array
+X Suffix Tree (KACTL) - Look at [Not needed, suffix array does all a suffix tree does]
++ Aho Corasick - Look at [included, long but power full]
++ Z-Function
++ KMP (Prefix Array)
++ Trie
++ Manacher (KACTL) - Look at, low priority [included, short]
+=======================================================================
+Datastructures:
++ Order statistic tree - Ayush
++ Fenwick Tree - Low Priority
++ Segment Tree - Ayush, Collin (Java Low Priority)
++ Lazy Segment Tree
++ Union Find/Disjoint Sets - Java (Collin)
+X Union Find Rollback - Look At (Collin)
++ KD-Tree - Ayush
+X Splay Trees - Maybe
++ LCA Data Structure - Maybe
+- Submatrix Sums (KACTL) - Look at
+- Line Container (KACTL) - Look at, maybe implement
+X Treap - Look at, low priority
+X 2d Fenwick/Seg Trees - Look at, low priority
+X RMQ - Look at, low priority
+X BerlekampMassey, LinearRecurrence (KACTL) - Look at, low priority
+X HLD (KACTL) - Look at, low priority
+X Link Cut Tree (KACTL) - Look at
+=======================================================================
+Java Shortcuts:
++ custom comparators for priority queues
+X compareTo() template / common implementation
+CPP:
++ Fast IO
++ Compilation
+=======================================================================
+Graphs:                 Collin
++ Max Flow (Dinics)
++ Min Cost Max Flow
+X Global Min Cut Stoehr Wagner - Look at/Don't add if similar to others     [Excluded]
+X Push-relabel Max Flow - Look at                                           [Excluded, same problem as Dinics, can be faster sometimes]
+X Min Cost Bipartite Matching - Look at                                     [Excluded, same problem as Min Cost Max Flow]
++ Bipartite Matching/Hopcroft Karp - Low Priority
++ SCCs - Collin
++ Eulerian Paths - Collin
++ LCA - Collin (Seg Tree), Ayush (Binary Lifting)
++ Bellman Ford
++ Floyd Warshall
+X TSP                   maybe
+X Weighted Matching (KACTL)
+X Biconnected Components (KACTL) - Look at, low priority
+X 2SAT (KACTL) - Look at, low priority
+- Maximal Cliques (KACTL) - Look at, low priority
+=======================================================================
+Geometry:
++ Geo Libs - Ayush
+- Add Java Geo stuff? - Low Priority
++ Delaunay Triangulation - Low/Medium Priority (KACTL)
++ Convex Hull
++ Minimum enclosing circle (KACTL)
++ Closest Pair (KACTL)
++ Spherical Distance
+=======================================================================
+Number Theory:          Collin
++ CRT               
++ Linear Diophantine      Linear algebra?  
++ Mod Inverse   
++ Extended Euclid
++ Prime Sieve - Low Priority
++ Mod Log (KACTL)
++ Mod Sqrt (KACTL) - Low priority
++ MillerRabin (KACTL)
+X Factor (KACTL) - low priority
++ Euler Phi's Function
+=======================================================================
+Linear Algebra
++ RREF - Ayush 
++ Matrix Multiplication - Abdel
++ Matrix Inverse - Abdel
++ Determinant - Abdel
+=======================================================================
+Misc
++ FFT - Ayush
+X FFT Mod? - Abdel
+X FastSubsetTransform - Look at, low priority
+- Simplex Algorithm - Look at
++ LIS   Collin
++ Knapsack
++ Dates - Months in a day, Usage of time libraries
+X Regex - Low Priority
+- Interval Cover (KACTL) - Look at
++ Ternary Search
+
+Bit Hacks (KACTL 10.5.1) - Ayush
++ Gosper's hack
+
+
+
+
+=======================================================================
+Possibly add:
+Math 
++ Quadrilaterals (KACTL)
++ Normal Distribution (KACTL)
+
+CPP Syntax
++ Lambdas, Sort - Ayush
+
+DS
++ Lazy Segment Tree - Ayush
+- KACTL Submatrix.h
+- KACTL LineContainer.h
+X KACTL FenwickTree2d.h - Ayush 
+
+Graphs
+- Change Bipartite to HopcroftKarp?
+- Maximal Clique - Collin
+
+- Simplex (KACTL)
+
+- Regex - Low Priority - Collin

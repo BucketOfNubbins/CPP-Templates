@@ -111,7 +111,7 @@ public class Misc {
      */
     public static int bisectLeft(int[] A, int k, int s) {
         int lo = 0;
-        int hi = s; // for this problem, inclusive hi is beneficial
+        int hi = s;
         while (lo < hi) {
             int mid = (lo + hi) / 2;
             if (A[mid] < k) {

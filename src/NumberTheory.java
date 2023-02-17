@@ -7,7 +7,6 @@ public class NumberTheory {
         System.out.println(sqrt(1, 5));
     }
 
-
     static long crt(long a, long m, long b, long n) {
         if (n > m) return crt(b, n, a, m);
         long[] out = eEuclid(m, n);
@@ -24,7 +23,7 @@ public class NumberTheory {
     }
 
     static long lcm(long a, long b) {
-        return a * b / gcd(a, b);
+        return a / gcd(a, b) * b;
     }
 
     // Euclid's algorithm to find the gcd of two numbers, written in Java

@@ -1,33 +1,58 @@
 public class Geometry2D {
 
-    private static double dotProduct(double[] a, double[] b) {
+    static double getTheta(double[] a) {
+        return Math.atan2(a[1], a[0]);
+    }
+
+    static double dotProduct(double[] a, double[] b) {
         return a[0] * b[0] + a[1] * b[1];
     }
 
-    private static double crossProduct(double[] a, double[] b) {
+    static double crossProduct(double[] a, double[] b) {
         return a[0] * b[1] - a[1] * b[0];
     }
 
     // project a onto b
-    private static double[] project(double[] a, double[] b) {
+    static double[] project(double[] a, double[] b) {
         return scale(dotProduct(a, b) / (magnitude(b) * magnitude(b)), b);
     }
 
-    private static double triangleArea(double[] a, double[] b) {
+    static double magnitude(double[] vec) {
+        return Math.hypot(vec[0], vec[1]);
+    }
+
+    static double magnitudeSquared(double[] vec) {
+        return vec[0] * vec[0] + vec[1] * vec[1];
+    }
+
+    static double[] scale(double s, double[] vec) {
+        return new double[]{vec[0] * s, vec[1] * s};
+    }
+
+    static double[] add(double[] a, double[] b) {
+        return new double[]{a[0] + b[0], a[1] + b[1]};
+    }
+
+    // creates new vector from a to b
+    static double[] to(double[] a, double[] b) {
+        return new double[]{b[0] - a[0], b[1] - a[1]};
+    }
+
+    static double triangleArea(double[] a, double[] b) {
         return Math.abs(crossProduct(a, b) / 2);
     }
 
     // gives the length of the last side of the triangle with side lengths a and b and an angle c
-    private static double sasSide(double a, double c, double b) {
+    static double sasSide(double a, double c, double b) {
         return Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(c));
     }
 
     // Gives the angle of the triangle at the point between a and b
-    private static double sssTheta(double a, double b, double c) {
+    static double sssTheta(double a, double b, double c) {
         return Math.acos((a * a + b * b - c * c) / (2 * a * b));
     }
 
-    private static double polygonArea(double[][] vertices) {
+    static double polygonArea(double[][] vertices) {
         double area = 0;
         for (int i = 0; i < vertices.length; i++) {
             area += crossProduct(vertices[i], vertices[(i + 1) % vertices.length]);
@@ -35,28 +60,7 @@ public class Geometry2D {
         return Math.abs(area / 2);
     }
 
-    private static double magnitude(double[] vec) {
-        return Math.hypot(vec[0], vec[1]);
-    }
-
-    private static double magnitudeSquared(double[] vec) {
-        return vec[0] * vec[0] + vec[1] * vec[1];
-    }
-
-    private static double[] scale(double s, double[] vec) {
-        return new double[]{vec[0] * s, vec[1] * s};
-    }
-
-    private static double[] add(double[] a, double[] b) {
-        return new double[]{a[0] + b[0], a[1] + b[1]};
-    }
-
-    // creates new vector from a to b
-    private static double[] to(double[] a, double[] b) {
-        return new double[]{b[0] - a[0], b[1] - a[1]};
-    }
-
-    private static boolean segmentIntersection(double[] a, double[] b, double[] p, double[] q) {
+    static boolean segmentIntersection(double[] a, double[] b, double[] p, double[] q) {
         double[] ab = to(a, b);
         double[] ap = to(a, p);
         double[] aq = to(a, q);
@@ -67,13 +71,13 @@ public class Geometry2D {
     }
 
     // Line goes through a and b. Point p
-    private static double[] pointLineClosestPoint(double[] p, double[] a, double[] b) {
+    static double[] pointLineClosestPoint(double[] p, double[] a, double[] b) {
         double[] ab = to(a, b);
         double[] ap = to(a, p);
         return add(a, project(ap, ab));
     }
 
-    private static double[] pointSegmentClosestPoint(double[] p, double[] a, double[] b) {
+    static double[] pointSegmentClosestPoint(double[] p, double[] a, double[] b) {
         double[] t = pointLineClosestPoint(p, a, b);
         double[] at = to(a, t);
         double[] ap = to(a, b);
@@ -89,7 +93,7 @@ public class Geometry2D {
 
     // intersection point of two lines
     // TODO: Verify
-    private static double[] lineLineIntersection(double[] a, double[] b, double[] p, double[] q) {
+    static double[] lineLineIntersection(double[] a, double[] b, double[] p, double[] q) {
         double denominator = (a[0] - b[0]) * (p[1] - q[1]) - (a[1] - b[1]) * (p[0] - q[0]);
         if (denominator == 0) {
             return null; // parallel or coincident
@@ -102,7 +106,7 @@ public class Geometry2D {
     }
 
     // closest point(s) between two segments
-    private static double[][] segmentSegmentClosestPoints(double[] a, double[] b, double[] p, double[] q) {
+    static double[][] segmentSegmentClosestPoints(double[] a, double[] b, double[] p, double[] q) {
         if (segmentIntersection(a, b, p, q)) {
             return new double[][]{lineLineIntersection(a, b, p, q)};
         }

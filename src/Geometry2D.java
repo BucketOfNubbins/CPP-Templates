@@ -183,4 +183,50 @@ public class Geometry2D {
         return bottomCross >= 0 && topCross <= 0;
     }
 
+    /**
+     * Returns the distance between the two specified points.
+     *
+     * @param a The first point.
+     * @param b The second point.
+     * @return The distance between the two specified points.
+     */
+    static double distance(double[] a, double[] b) {
+        return Math.hypot(a[0] - b[0], a[1] - b[1]);
+    }
+
+    /**
+     * Returns the indices of the two farthest (not necessarily distinct) points in the convex hull. Returns null if
+     * there are no points in the convex hull.
+     *
+     * @param convexHull The convex hull.
+     * @return The indices of the two farthest (not necessarily distinct) points in the convex hull, or null if there
+     *         are no points in the convex hull.
+     */
+    static int[] farthestPointsIndices(double[][] convexHull) {
+        final int n = convexHull.length;
+        if (n == 0) {
+            return null;
+        }
+
+        int[] res = {0, 0};
+        double resDistance = 0;
+        int l = 0, r = 1;
+        while (l < r && r < n) {
+            double prevDistance = distance(convexHull[l], convexHull[r - 1]);
+            double curDistance = distance(convexHull[l], convexHull[r]);
+            double nextDistance = r < n - 1 ? distance(convexHull[l], convexHull[r + 1]) : 0;
+
+            if (prevDistance < curDistance && curDistance > nextDistance) {
+                if (resDistance > curDistance) {
+                    res = new int[]{l, r};
+                    resDistance = curDistance;
+                }
+                ++l;
+            } else {
+                ++r;
+            }
+        }
+
+        return res;
+    }
 }

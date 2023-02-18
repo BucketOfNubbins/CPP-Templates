@@ -129,4 +129,58 @@ public class Geometry2D {
         return new double[][]{abc, pqc};
     }
 
+    // returns the two indices of min and max x points
+    static int[] splitConvexPolygon(double[][] polygon) {
+        int minX = -1;
+        int maxX = -1;
+        for (int i = 0; i < polygon.length; i++) {
+            if (minX == -1 || polygon[i][0] < polygon[minX][0]) {
+                minX = i;
+            }
+            if (maxX == -1 || polygon[i][0] > polygon[maxX][0]) {
+                maxX = i;
+            }
+        }
+        return new int[]{minX, maxX};
+    }
+
+    // polygon given in counterclockwise order
+    static boolean pointInConvexPolygon(double[][] polygon, int[] indices, double[] p) {
+        if (p[0] < polygon[indices[0]][0] || p[0] > polygon[indices[1]][0]) { // Check x bounding interval
+            return false;
+        }
+        // -> bottom chain
+        int lo = 0;
+        int hi = polygon.length; // exclusive
+        while (lo < hi) {
+            int mid = (lo + hi) / 2;
+            if (polygon[(indices[0] + mid) % polygon.length][0] < p[0]) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        int firstIndex = (lo - 1 + polygon.length) % polygon.length;
+        double[] pa = to(p, polygon[firstIndex]);
+        double[] ab = to(polygon[firstIndex], polygon[lo]);
+        double bottomCross = crossProduct(pa, ab);
+
+        // <- top chain
+        lo = 0;
+        hi = polygon.length;
+        while (lo < hi) {
+            int mid = (lo + hi) / 2;
+            if (polygon[(indices[0] - mid + polygon.length) % polygon.length][0] < p[0]) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        firstIndex = (lo + 1) % polygon.length;
+        pa = to(p, polygon[firstIndex]);
+        ab = to(polygon[firstIndex], polygon[lo]);
+        double topCross = crossProduct(pa, ab);
+        return bottomCross >= 0 && topCross <= 0;
+    }
+
 }

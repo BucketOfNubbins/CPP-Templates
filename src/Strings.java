@@ -1,7 +1,6 @@
-import java.util.ArrayList;
-import java.util.List;
 
 public class Strings {
+    // pi[i] = length of the longest proper prefix of the substring s[0...i] which is also a suffix of this substring.
     private static void prefixFunc(String s, int[] pi) {
         int n = s.length();
         for (int i = 1; i < n; i++) {
@@ -14,6 +13,7 @@ public class Strings {
         }
     }
 
+    // z[i] is the length of the longest string that is, at the same time, a prefix of s and a prefix of the suffix of s starting at i
     private static void zFunc(String s, int[] z) {
         int n = s.length();
         for (int i = 1, l = 0, r = 0; i < n; ++i) {

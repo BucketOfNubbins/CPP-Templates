@@ -3,15 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+// Euler Walk is a path that goes through every edge exactly once
 public class EulerWalk {
-
 
     // gr is adjacency List, with pair (destination, global edge index), output is reverse path
     private static List<Integer> eulerWalk(List<List<int[]>> gr, int nEdges, int src) {
         int n = gr.size();
         int[] D = new int[n];
         int[] its = new int[n];
-        int[] eu = new int[n];
+        int[] eu = new int[nEdges];
         List<Integer> ret = new ArrayList<>();
         Stack<Integer> s = new Stack<>();
         s.push(src);

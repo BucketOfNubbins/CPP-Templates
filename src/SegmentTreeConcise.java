@@ -1,7 +1,7 @@
 /**
  * Implements a segment tree for range min queries
  */
-public class ConciseSegmentTree {
+public class SegmentTreeConcise {
     int[] tree;
     Integer[] updates;
     int size;
@@ -19,7 +19,7 @@ public class ConciseSegmentTree {
         return updateValue;
     }
 
-    public ConciseSegmentTree(int[] array) {
+    public SegmentTreeConcise(int[] array) {
         tree = new int[array.length * 2 - 1];
         updates = new Integer[array.length * 2 - 1];
         size = array.length;

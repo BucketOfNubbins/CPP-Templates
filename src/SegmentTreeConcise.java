@@ -1,5 +1,6 @@
 /**
  * Implements a segment tree for range min queries
+ * TODO: Fix implementation
  */
 public class SegmentTreeConcise {
     int[] tree;

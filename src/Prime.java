@@ -6,6 +6,22 @@ import java.util.Objects;
 import java.util.stream.LongStream;
 
 public class Prime {
+    /*
+    List of random large primes:
+    - int:
+        307722227
+        763949873
+        834545111
+        667269971
+        235974839
+    - long:
+        551133728342474639L
+        248883903731404283L
+        378340956398423323L
+        530129765484895267L
+        280763777358021569L
+     */
+
     /**
      * Fast way to get all the primes up to some limit
      *
@@ -16,6 +32,7 @@ public class Prime {
         List<Integer> primes = new ArrayList<>();
         boolean[] isPrime = new boolean[n];
         Arrays.fill(isPrime, true);
+
         for (int i = 2; i < n; i++) {
             if (isPrime[i]) {
                 primes.add(i);
@@ -132,7 +149,7 @@ public class Prime {
     /**
      * Returns the positive factors of the specified value `n`, or null if `n` is 0 or `Long.MIN_VALUE`.
      * <p>
-     * Runs in O(tau(n)) time, where tau(n) is the number of divisors of `n`.
+     * Runs in O(sqrt(n) / lg n) time (due to prime factorization).
      *
      * @param n                     The long whose factors are to be returned.
      * @param sortedPrimesUpToSqrtN The primes up to and including sqrt(n) in sorted order. The method will run just as

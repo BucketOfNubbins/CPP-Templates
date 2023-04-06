@@ -13,12 +13,15 @@ public class Main {
         } catch (Exception e) {
             // Do nothing
         }
+        
 
         br.close();
         bw.close();
     }
 
-    private static char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`1234567890-=~!@#$%^&*()_+[]\\{}|;':\",./<>?".toCharArray();
+    private static final char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`1234567890-=~!@#$%^&*()_+[]\\{}|;':\",./<>?".toCharArray();
+    private static final char[] greekLower = "αβγδεζηθικλμνξοπρςστυφχψω".toCharArray();
+    private static final char[] greekUpper = "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡ_ΣΤΥΦΧΨΩ".toCharArray();
 
 
     private static String generate(int l) throws NoSuchAlgorithmException {

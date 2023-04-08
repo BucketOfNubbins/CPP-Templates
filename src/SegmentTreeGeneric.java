@@ -101,9 +101,8 @@ public class SegmentTreeGeneric<E> {
             E u = (E) updates[v];
             updates[v] = null;
             int m = mid(l, r);
-            E left = update(getLeft(v, l, r), l, m, l, Math.min(r, m), u);
-            E right = update(getRight(v, l, r), m + 1, r, Math.max(m + 1, l), r, u);
-            values[v] = combine.apply(left, right);
+            update(getLeft(v, l, r), l, m, l, Math.min(r, m), u);
+            update(getRight(v, l, r), m + 1, r, Math.max(m + 1, l), r, u);
         }
     }
 

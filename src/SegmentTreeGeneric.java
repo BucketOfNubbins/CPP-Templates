@@ -61,13 +61,13 @@ public class SegmentTreeGeneric<E> {
     }
 
     private E query(int v, int l, int r, int ql, int qr) {
-        push(v, l, r);
         if (ql > qr) {
             return identity;
         }
         if (l == ql && r == qr) {
             return (E) values[v];
         }
+        push(v, l, r);
         int m = mid(l, r);
         E left = query(getLeft(v, l, r), l, m, ql, Math.min(m, qr));
         E right = query(getRight(v, l, r), m + 1, r, Math.max(ql, m + 1), qr);

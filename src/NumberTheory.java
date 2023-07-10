@@ -194,7 +194,7 @@ public class NumberTheory {
 
     // find (x, y) such that a*x + b*y = c or return false if it's not possible
     // [x + k*b/gcd(a, b), y - k*a/gcd(a, b)] are also solutions
-    long[] diof(long a, long b, long c) {
+    static long[] diof(long a, long b, long c) {
         long[] euclid = eEuclid(Math.abs(a), Math.abs(b));
         long g = Math.abs(euclid[0]);
         if (c % g != 0) return null;

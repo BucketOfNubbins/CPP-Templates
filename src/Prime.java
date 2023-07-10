@@ -45,6 +45,7 @@ public class Prime {
     }
 
     // Euler's totient function
+    // Counts the positive integers up to a given integer n that are relatively prime to n
     public static int phi(int n) {
         int res = n;
         for (int i = 2; i * i <= n; i++)

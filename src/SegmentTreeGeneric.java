@@ -19,14 +19,13 @@ public class SegmentTreeGeneric<E> {
     // E rangeCombine(E value, int[] range) {}
     private final BiFunction<E, int[], E> rangeCombine;
 
-
     int size;
     Object[] values;
     Object[] updates;
 
-    public SegmentTreeGeneric(int n, E ii, BinaryOperator<E> cc, BiFunction<E, int[], E> rc) {
-        identity = ii;
-        combine = cc;
+    public SegmentTreeGeneric(int n, E i, BinaryOperator<E> c, BiFunction<E, int[], E> rc) {
+        identity = i;
+        combine = c;
         rangeCombine = rc;
         size = n;
         values = new Object[2 * n];
@@ -35,9 +34,9 @@ public class SegmentTreeGeneric<E> {
 //        Arrays.fill(updates, null); Default value is null
     }
 
-    public SegmentTreeGeneric(E[] array, E ii, BinaryOperator<E> cc, BiFunction<E, int[], E> rc) {
-        identity = ii;
-        combine = cc;
+    public SegmentTreeGeneric(E[] array, E i, BinaryOperator<E> c, BiFunction<E, int[], E> rc) {
+        identity = i;
+        combine = c;
         rangeCombine = rc;
         size = array.length;
         values = new Object[array.length * 2];
@@ -131,8 +130,8 @@ public class SegmentTreeGeneric<E> {
     static final BiFunction<Integer, int[], Integer> RangeCombine = (I, A) -> (A[1] - A[0] + 1) * I;
 
     static final int Size = 20;
-    static final int maxValue = 20;
-    static final int operations = 10;
+    static final int MaxValue = 20;
+    static final int Operations = 10;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -140,10 +139,10 @@ public class SegmentTreeGeneric<E> {
 
         Integer[] arr = new Integer[Size];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (Math.random() * maxValue);
+            arr[i] = (int) (Math.random() * MaxValue);
         }
         SegmentTreeGeneric<Integer> a = new SegmentTreeGeneric<>(arr, Identity, Combine, RangeCombine);
-        for (int i = 0; i < operations; i++) {
+        for (int i = 0; i < Operations; i++) {
             // randomly choose left and right bounds
             int l = (int) (Math.random() * arr.length);
             int r = l + (int) (Math.random() * (arr.length - l));
@@ -151,7 +150,7 @@ public class SegmentTreeGeneric<E> {
                 int x = a.query(l, r);
                 System.out.println(x);
             } else {
-                int v = (int) (Math.random() * maxValue);
+                int v = (int) (Math.random() * MaxValue);
                 a.update(l, r, v);
             }
         }

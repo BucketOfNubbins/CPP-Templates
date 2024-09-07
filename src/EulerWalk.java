@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -46,10 +47,11 @@ public class EulerWalk {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+
         String[] input = br.readLine().split(" ");
         int V = Integer.parseInt(input[0]);
         int E = Integer.parseInt(input[1]);
-        while (V != 0 && E != 0) {
+        while (V != 0 && E != 0) { // multiple test cases. V=0,E=0 indicates end
             List<List<int[]>> gr = new ArrayList<>(V);
             for (int i = 0; i < V; i++) {
                 gr.add(new ArrayList<>());
@@ -61,7 +63,7 @@ public class EulerWalk {
                 gr.get(u).add(new int[]{v, i});
             }
             int src = 0;
-            for (int i = 0; i < V; i++) {
+            for (int i = 0; i < V; i++) { // TODO: double check this
                 if (gr.get(i).size() % 2 == 1) {
                     src = i;
                     break;

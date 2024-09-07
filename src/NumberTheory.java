@@ -4,9 +4,18 @@ import java.util.HashMap;
 public class NumberTheory {
 
     public static void main(String[] args) {
-        System.out.println(sqrt(1, 5));
+        System.out.println(simpleChoose(23, 13, 1000000007));
     }
 
+    /**
+     * Chinese Remainder Theorem
+     *
+     * @param a
+     * @param m
+     * @param b
+     * @param n
+     * @return
+     */
     static long crt(long a, long m, long b, long n) {
         if (n > m) return crt(b, n, a, m);
         long[] out = eEuclid(m, n);
@@ -159,6 +168,9 @@ public class NumberTheory {
 
     // n choose k (mod m)
     static long choose(long n, long k, long m) {
+        if (k > n) {
+            return 0L;
+        }
         if (n - k < k) {
             return choose(n, n - k, m);
         }
@@ -206,4 +218,32 @@ public class NumberTheory {
         if (b < 0) y = -y;
         return new long[]{x, y};
     }
+
+    static long LARGE_PRIME = 518463576809201L; // 17,000 * LARGE_PRIME < 2^63
+
+    static long indexToBitPattern(int maxBitPosition, int bitCount, long index) {
+        long outputPattern = 0;
+        for (int bitPosition = maxBitPosition; bitCount > 0; bitPosition--) {
+            long c = choose(maxBitPosition, bitCount, LARGE_PRIME);
+            if (c < index) {
+                outputPattern |= 1L << bitPosition;
+                index -= c;
+                bitCount--;
+            }
+        }
+        return outputPattern;
+    }
+
+    static long bitPatternToIndex(long bitPattern) {
+        long index = 0;
+        int bitIndex = 1;
+        while (bitPattern != 0) {
+            long bit = bitPattern & -bitPattern;
+            bitPattern ^= bit;
+            int bitPosition = Long.numberOfTrailingZeros(bit);
+            index += choose(bitPosition, bitIndex, LARGE_PRIME);
+        }
+        return index;
+    }
+
 }

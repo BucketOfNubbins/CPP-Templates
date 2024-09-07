@@ -1,19 +1,27 @@
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class Main {
-
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         try {
-            System.out.println(generate(32));
+            for (int i = 0; i < 10; i++) {
+                System.out.println(generate(26));
+            }
         } catch (Exception e) {
             // Do nothing
         }
+
 
         br.close();
         bw.close();
@@ -32,6 +40,4 @@ public class Main {
         }
         return new String(string);
     }
-
-
 }

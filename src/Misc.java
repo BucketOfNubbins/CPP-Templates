@@ -207,5 +207,13 @@ public class Misc {
                 MatrixChainMultiply(A, s, s[i][j] + 1, j));
     }
 
+    private static int nextBinary(int x) { // Could be useful
+        int k = Integer.bitCount(x);
+        x += (x & -x);
+        int fillCount = k - Integer.bitCount(x);
+        x |= (1 << fillCount) - 1;
+        return x;
+    }
+
 
 }

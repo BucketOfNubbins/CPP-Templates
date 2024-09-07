@@ -7,7 +7,7 @@ import java.util.stream.LongStream;
 
 public class Prime {
     /*
-    List of random large primes:
+    A couple random large prime numbers:
     - int:
         307722227
         763949873
@@ -15,6 +15,7 @@ public class Prime {
         667269971
         235974839
     - long:
+        518463576809201L
         551133728342474639L
         248883903731404283L
         378340956398423323L
@@ -46,6 +47,11 @@ public class Prime {
 
     // Euler's totient function
     // Counts the positive integers up to a given integer n that are relatively prime to n
+    // Useful when combined with Fermat-Euler theorem.
+    // {
+    //      if a and n are coprime (gcd == 1)
+    //      a^phi(n) == 1 mod n
+    // }
     public static int phi(int n) {
         int res = n;
         for (int i = 2; i * i <= n; i++)
@@ -58,7 +64,26 @@ public class Prime {
         return res;
     }
 
+    /*
+    phi(n) = n * product_{p | n} (1 - p_n)
+    or
+    phi(n) = product_{p, k} p^(k-1) * (p-1)
+    where p is a prime divisor of n, and k is the exponent of that divisor.
+
+    CODE BELOW IS UNTESTED, AND LIKELY HAS OVERFLOW ISSUES
+     */
+    public static int phi(int n, int[][] factors) {
+        int res = 1;
+        for (int[] pair : factors) {
+            int p = pair[0];
+            int k = pair[1];
+            res *= NumberTheory.modPow(p, k - 1, n) * (p - 1);
+        }
+        return res;
+    }
+
     // Euler's totient function
+    // If you need many (relatively small) values of the totient function
     private static long[] generatePhi(int length) {
         long[] arr = LongStream.range(0, length).toArray();
         for (int i = 2; i < length; i++) {

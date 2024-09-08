@@ -22,6 +22,15 @@ public class Prime {
         530129765484895267L
         280763777358021569L
      */
+    /*
+    Prime number around sqrt(2^31)
+    46021
+
+    Prime number around sqrt(2^63)
+    2147483647L
+
+     See https://t5k.org/curios/ for more choices of primes
+     */
 
     /**
      * Fast way to get all the primes up to some limit

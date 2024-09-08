@@ -4,18 +4,19 @@ import java.util.HashMap;
 public class NumberTheory {
 
     public static void main(String[] args) {
-        System.out.println(simpleChoose(23, 13, 1000000007));
+        int n = 30;
+        int b = 15;
+        long p = (1 << b) - 1;
+        for (int i = 0; p < (1 << n); i++) {
+            long ti = bitPatternToIndex(p);
+            long tp = indexToBitPattern(n, b, i);
+            if (i != ti || p != tp) {
+                System.out.println("ERROR!");
+            }
+            p = nextBinary(p);
+        }
     }
 
-    /**
-     * Chinese Remainder Theorem
-     *
-     * @param a
-     * @param m
-     * @param b
-     * @param n
-     * @return
-     */
     static long crt(long a, long m, long b, long n) {
         if (n > m) return crt(b, n, a, m);
         long[] out = eEuclid(m, n);
@@ -53,7 +54,6 @@ public class NumberTheory {
         long x = 1, y = 0, x1 = 0, y1 = 1, a1 = a, b1 = b;
         long t;
         while (b1 != 0) {
-//            System.out.printf("%d & %d & %d & %d & %d & %d \\\\\n", x, y, x1, y1, a1, b1);
             long q = a1 / b1;
             t = x1;
             x1 = x - q * x1;
@@ -65,7 +65,6 @@ public class NumberTheory {
             b1 = a1 - q * b1;
             a1 = t;
         }
-//        System.out.printf("%d & %d & %d & %d & %d & %d \n", x, y, x1, y1, a1, b1);
         return new long[]{a1, (x + b) % b, y};
     }
 
@@ -182,7 +181,7 @@ public class NumberTheory {
             denominator *= i;
             denominator %= m;
         }
-        long ans = (numerator * eEuclid(denominator, m)[1]) % m;
+        long ans = numerator * modularInverse(denominator, m) % m;
         return (ans + m) % m;
     }
 
@@ -219,13 +218,43 @@ public class NumberTheory {
         return new long[]{x, y};
     }
 
-    static long LARGE_PRIME = 518463576809201L; // 17,000 * LARGE_PRIME < 2^63
+    // a * modularInverse(a, m) == 1 (mod m)
+    static long modularInverse(long a, long m) {
+        long[] euclid = eEuclid(a, m);
+        if (euclid[0] != 1) {
+            System.out.println("No Inverse!");
+            return -1;
+        } else {
+            return ((euclid[1] % m) + m) % m;
+        }
+    }
 
+    // 1011 -> 1101
+    // calculates the next smallest binary number with the same number of set '1' bits.
+    private static long nextBinary(long x) {
+        int k = Long.bitCount(x);
+        x += (x & -x);
+        int fillCount = k - Long.bitCount(x);
+        x |= (1L << fillCount) - 1;
+        return x;
+    }
+
+    static long LARGE_PRIME = 2147483647L; // ~ sqrt(2^63)
+    // 1000000007 also works in many cases
+    // The chosen prime should be about the square root of the maximum possible value. (A bit less for wiggle room is good.)
+    // for 32-bit integers, 46021 is a good choice.
+    // Note that the chosen prime is also the maximum value returned.
+
+
+    // See https://cs.stackexchange.com/questions/152121/generating-the-n-th-number-with-k-bits-set-is-it-possible
+    // https://isl.stanford.edu/people/cover/papers/transIT/0073cove.pdf
+
+    // generates the ith smallest binary number with bitCount bits set to 1
     static long indexToBitPattern(int maxBitPosition, int bitCount, long index) {
         long outputPattern = 0;
         for (int bitPosition = maxBitPosition; bitCount > 0; bitPosition--) {
-            long c = choose(maxBitPosition, bitCount, LARGE_PRIME);
-            if (c < index) {
+            long c = choose(bitPosition, bitCount, LARGE_PRIME);
+            if (c <= index) {
                 outputPattern |= 1L << bitPosition;
                 index -= c;
                 bitCount--;
@@ -234,6 +263,7 @@ public class NumberTheory {
         return outputPattern;
     }
 
+    // calculates the index of the given bit pattern, related to the above function
     static long bitPatternToIndex(long bitPattern) {
         long index = 0;
         int bitIndex = 1;
@@ -242,6 +272,7 @@ public class NumberTheory {
             bitPattern ^= bit;
             int bitPosition = Long.numberOfTrailingZeros(bit);
             index += choose(bitPosition, bitIndex, LARGE_PRIME);
+            bitIndex++;
         }
         return index;
     }

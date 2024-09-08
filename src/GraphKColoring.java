@@ -2,14 +2,7 @@ import java.io.*;
 import java.util.HashMap;
 
 public class GraphKColoring {
-
-    private static int nextBinary(int x) { // Could be useful
-        int k = Integer.bitCount(x);
-        x += (x & -x);
-        int fillCount = k - Integer.bitCount(x);
-        x |= (1 << fillCount) - 1;
-        return x;
-    }
+    // nextBinary, indexToBitPattern, and bitPatternToIndex in NumberTheory can be useful here
 
     private static int[] solveKColoring(int n, int[] adjLists) {
         int[] optimalSet = new int[1 << n];
@@ -54,6 +47,8 @@ public class GraphKColoring {
 
     private static int capacity;
 
+    // Solves the kattis problem 'Bus Planning'
+    // https://open.kattis.com/problems/busplanning
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));

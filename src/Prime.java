@@ -42,7 +42,8 @@ public class Prime {
         List<Integer> primes = new ArrayList<>();
         boolean[] isPrime = new boolean[n];
         Arrays.fill(isPrime, true);
-
+        isPrime[0] = false;
+        isPrime[1] = false;
         for (int i = 2; i < n; i++) {
             if (isPrime[i]) {
                 primes.add(i);
@@ -63,6 +64,8 @@ public class Prime {
     public static boolean[] getIsPrimes(int n) {
         boolean[] isPrime = new boolean[n];
         Arrays.fill(isPrime, true);
+        isPrime[0] = false;
+        isPrime[1] = false;
         for (int i = 2; i < n; i++) {
             if (isPrime[i]) {
                 for (long j = (long) i * i; j < n; j += i) {

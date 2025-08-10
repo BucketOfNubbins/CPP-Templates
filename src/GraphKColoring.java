@@ -16,10 +16,10 @@ public class GraphKColoring {
                 int bestK = Integer.MAX_VALUE;
                 int bestSet = 0;
                 int ci = i;
-                while (ci != 0) { // O(n)
+                while (ci != 0) { // O(n) iterations
                     int b = Integer.lowestOneBit(ci);
                     ci ^= b;
-                    int set = optimalSet[i ^ b];
+                    int set = optimalSet[i ^ b]; // O(n) operation
                     int k = subsetK[set] + subsetK[i ^ set];
                     if (k < bestK) {
                         bestK = k;

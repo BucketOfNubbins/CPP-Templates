@@ -35,7 +35,7 @@ public class Prime {
     /**
      * Fast way to get all the primes up to some limit
      *
-     * @param n indicates that we should generate the prime numbers up to n
+     * @param n - 1 is the max number we generate primes up to
      * @return A list of prime numbers
      */
     public static List<Integer> getPrimes(int n) {
@@ -52,6 +52,25 @@ public class Prime {
             }
         }
         return primes;
+    }
+
+    /**
+     * Same algorithm as above, but returns the isPrime array rather than a list of primes.
+     *
+     * @param n size of isPrimes array. n-1 is the max value we test.
+     * @return a boolean array, where array[i] indicates is true if and only if the index i is prime
+     */
+    public static boolean[] getIsPrimes(int n) {
+        boolean[] isPrime = new boolean[n];
+        Arrays.fill(isPrime, true);
+        for (int i = 2; i < n; i++) {
+            if (isPrime[i]) {
+                for (long j = (long) i * i; j < n; j += i) {
+                    isPrime[(int) j] = false;
+                }
+            }
+        }
+        return isPrime;
     }
 
     // Euler's totient function

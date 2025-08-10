@@ -1,12 +1,6 @@
 import java.io.*;
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class Main {
 
@@ -16,12 +10,12 @@ public class Main {
 
         try {
             for (int i = 0; i < 10; i++) {
-                System.out.println(generate(26));
+                bw.write(generate(60));
+                bw.write("\n");
             }
         } catch (Exception e) {
             // Do nothing
         }
-
 
         br.close();
         bw.close();

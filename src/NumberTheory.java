@@ -1,11 +1,13 @@
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class NumberTheory {
 
     public static void main(String[] args) {
-        int n = 30;
-        int b = 15;
+        long start = System.nanoTime();
+        int n = 20; // has been tested with n = 30 and b = 15, no issues found.
+        int b = 10;
         long p = (1 << b) - 1;
         for (int i = 0; p < (1 << n); i++) {
             long ti = bitPatternToIndex(p);
@@ -15,6 +17,9 @@ public class NumberTheory {
             }
             p = nextBinary(p);
         }
+        long end = System.nanoTime();
+        long elapsedTime = end - start;
+        System.out.println(elapsedTime * 1e-9 + " seconds elapsed.");
     }
 
     static long crt(long a, long m, long b, long n) {
@@ -83,6 +88,14 @@ public class NumberTheory {
         }
         long[] arr = rEEuclid(b, a % b);
         return new long[]{arr[0], arr[2], arr[1] - arr[2] * (a / b)};
+    }
+
+    static BigInteger[] BigEEuclid(BigInteger a, BigInteger b) {
+        if (b.equals(BigInteger.ZERO)) {
+            return new BigInteger[]{a, BigInteger.ONE, BigInteger.ZERO};
+        }
+        BigInteger[] arr = BigEEuclid(b, a.mod(b));
+        return new BigInteger[]{arr[0], arr[2], arr[1].subtract(arr[2].multiply(a.divide(b)))};
     }
 
     // Smallest x S.T a^x = b (mod m)
@@ -185,6 +198,38 @@ public class NumberTheory {
         return (ans + m) % m;
     }
 
+    /*
+    TODO: better factorial / choose algorithms. See https://doi.org/10.1016/0196-6774(85)90006-9
+     */
+
+
+    // Appears to be the best of the choose functions.
+    // It is the fastest, and might be the least prone to overflow issues.
+    static long chooseWithoutMod(long n, long k) {
+        if (k > n) {
+            return 0L;
+        }
+        if (n - k < k) {
+            return chooseWithoutMod(n, n - k);
+        }
+        long numerator = 1;
+        long denominator = 1;
+        for (int i = 1; i <= k; i++) {
+            if (Long.MAX_VALUE / (n - (k - i)) <= numerator - 1 || Long.MAX_VALUE / i <= denominator - 1) {
+                long g = gcd(numerator, denominator);
+                numerator /= g;
+                denominator /= g;
+                if (g == 1) {
+                    System.out.println("Error! Could not simplify the fraction!");
+                    return -1;
+                }
+            }
+            numerator *= n - (k - i);
+            denominator *= i;
+        }
+        return numerator / denominator; // should be an exact integer
+    }
+
     static long simpleChoose(long n, long k, long m) {
         long ans = factorial(n, m);
         ans *= eEuclid(factorial(n - k, m), m)[1];
@@ -253,7 +298,7 @@ public class NumberTheory {
     static long indexToBitPattern(int maxBitPosition, int bitCount, long index) {
         long outputPattern = 0;
         for (int bitPosition = maxBitPosition; bitCount > 0; bitPosition--) {
-            long c = choose(bitPosition, bitCount, LARGE_PRIME);
+            long c = chooseWithoutMod(bitPosition, bitCount);
             if (c <= index) {
                 outputPattern |= 1L << bitPosition;
                 index -= c;
@@ -271,7 +316,7 @@ public class NumberTheory {
             long bit = bitPattern & -bitPattern;
             bitPattern ^= bit;
             int bitPosition = Long.numberOfTrailingZeros(bit);
-            index += choose(bitPosition, bitIndex, LARGE_PRIME);
+            index += chooseWithoutMod(bitPosition, bitIndex);
             bitIndex++;
         }
         return index;

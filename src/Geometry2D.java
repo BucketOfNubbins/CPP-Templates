@@ -1,5 +1,15 @@
 public class Geometry2D {
 
+    static int sign(double a) {
+        if (a < 0) {
+            return -1;
+        } else if (a == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
     static double getTheta(double[] a) {
         return Math.atan2(a[1], a[0]);
     }
@@ -8,13 +18,35 @@ public class Geometry2D {
         return a[0] * b[0] + a[1] * b[1];
     }
 
+    // 2D cross product
     static double crossProduct(double[] a, double[] b) {
         return a[0] * b[1] - a[1] * b[0];
+    }
+
+    // reflect a across m
+    static double[] reflect(double[] a, double[] m) {
+        double[] an = normalise(a);
+        double[] mn = normalise(m);
+        double[] d = scale(2, project(an, mn));
+        return scale(magnitude(a), add(an, d));
     }
 
     // project a onto b
     static double[] project(double[] a, double[] b) {
         return scale(dotProduct(a, b) / (magnitude(b) * magnitude(b)), b);
+    }
+
+    static double[] rotate90CCW(double[] vec) {
+        return new double[]{-vec[1], vec[0]};
+    }
+
+    static double[] rotate90CW(double[] vec) {
+        return new double[]{vec[1], -vec[0]};
+    }
+
+    static double[] normalise(double[] vec) {
+        double magnitude = magnitude(vec);
+        return new double[]{vec[0] / magnitude, vec[1] / magnitude};
     }
 
     static double magnitude(double[] vec) {
@@ -92,15 +124,16 @@ public class Geometry2D {
     }
 
     // intersection point of two lines
-    // TODO: Verify
+    // has been checked against https://open.kattis.com/problems/sneakattack
+    // TODO: check denominator test?
     static double[] lineLineIntersection(double[] a, double[] b, double[] p, double[] q) {
         double denominator = (a[0] - b[0]) * (p[1] - q[1]) - (a[1] - b[1]) * (p[0] - q[0]);
         if (denominator == 0) {
             return null; // parallel or coincident
         }
-        double x = (a[0] * b[1] - a[1] * b[0]) * (p[0] - q[0]) - (a[1] - b[1]) * (p[0] * q[1] - p[1] * q[0]);
+        double x = (a[0] * b[1] - a[1] * b[0]) * (p[1] - q[1]) - (a[0] - b[0]) * (p[0] * q[1] - p[1] * q[0]);
         x /= denominator;
-        double y = (a[0] * b[1] - a[1] * b[0]) * (p[1] - q[1]) - (a[0] - b[0]) * (p[0] * q[1] - p[1] * q[0]);
+        double y = (a[0] * b[1] - a[1] * b[0]) * (p[0] - q[0]) - (a[1] - b[1]) * (p[0] * q[1] - p[1] * q[0]);
         y /= denominator;
         return new double[]{x, y};
     }
@@ -200,7 +233,7 @@ public class Geometry2D {
      *
      * @param convexHull The convex hull.
      * @return The indices of the two farthest (not necessarily distinct) points in the convex hull, or null if there
-     *         are no points in the convex hull.
+     * are no points in the convex hull.
      */
     static int[] farthestPointsIndices(double[][] convexHull) {
         final int n = convexHull.length;

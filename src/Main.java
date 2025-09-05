@@ -8,14 +8,17 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        try {
-            for (int i = 0; i < 10; i++) {
-                bw.write(generate(60));
-                bw.write("\n");
-            }
-        } catch (Exception e) {
-            // Do nothing
-        }
+//        try {
+//            for (int i = 0; i < 10; i++) {
+//                bw.write(generate(60));
+//                bw.write("\n");
+//            }
+//        } catch (Exception e) {
+//            // Do nothing
+//        }
+
+        bw.write( Long.MAX_VALUE + "\n");
+
 
         br.close();
         bw.close();

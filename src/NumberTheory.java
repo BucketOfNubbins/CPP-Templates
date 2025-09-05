@@ -286,7 +286,8 @@ public class NumberTheory {
 
     static long LARGE_PRIME = 2147483647L; // ~ sqrt(2^63)
     // 1000000007 also works in many cases
-    // The chosen prime should be about the square root of the maximum possible value. (A bit less for wiggle room is good.)
+    // The chosen prime should be about the square root of the maximum possible value, but slightly smaller to ensure
+    // no overflow.
     // for 32-bit integers, 46021 is a good choice.
     // Note that the chosen prime is also the maximum value returned.
 

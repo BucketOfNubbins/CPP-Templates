@@ -74,12 +74,12 @@ public class Geometry2D {
         return Math.abs(crossProduct(a, b) / 2);
     }
 
-    // gives the length of the last side of the triangle with side lengths a and b and an angle c
+    // gives the length of the last side of the triangle with side lengths a and b and an angle c (in radians)
     static double sasSide(double a, double c, double b) {
         return Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(c));
     }
 
-    // Gives the angle of the triangle at the point between a and b
+    // Gives the angle of the triangle at the point between a and b, (so the angle that is opposite side c)
     static double sssTheta(double a, double b, double c) {
         return Math.acos((a * a + b * b - c * c) / (2 * a * b));
     }
@@ -89,7 +89,7 @@ public class Geometry2D {
         for (int i = 0; i < vertices.length; i++) {
             area += crossProduct(vertices[i], vertices[(i + 1) % vertices.length]);
         }
-        return Math.abs(area / 2);
+        return Math.abs(area / 2); // sign of area determines if the polygon was described clockwise or counterclockwise
     }
 
     static boolean segmentIntersection(double[] a, double[] b, double[] p, double[] q) {

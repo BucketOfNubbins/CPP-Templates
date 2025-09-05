@@ -27,7 +27,7 @@ public class Prime {
     46021
 
     Prime number around sqrt(2^63)
-    2147483647L
+    2147483647 L
 
      See https://t5k.org/curios/ for more choices of primes
      */

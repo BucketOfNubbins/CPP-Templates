@@ -1,6 +1,10 @@
 
+// In comments, I replace the .equals() function with == for legibility
+
 public class Strings {
     // pi[i] = length of the longest proper prefix of the substring s[0...i] which is also a suffix of this substring.
+    // s.substring(0, pi[i]) == s.substring(i + 1 - pi[i], i + 1)
+    // remember that in {s.substring(start, end)} start is inclusive and end is exclusive
     private static void prefixFunc(String s, int[] pi) {
         int n = s.length();
         for (int i = 1; i < n; i++) {
@@ -13,7 +17,8 @@ public class Strings {
         }
     }
 
-    // z[i] is the length of the longest string that is, at the same time, a prefix of s and a prefix of the suffix of s starting at i
+    // z[i] is the length of the longest string, starting from index i, that matches the start of s.
+    // s.substring(0, z[i]) == s.substring(i, i + z[i])
     private static void zFunc(String s, int[] z) {
         int n = s.length();
         for (int i = 1, l = 0, r = 0; i < n; ++i) {
@@ -71,4 +76,147 @@ public class Strings {
         }
         return s.substring(k, k + s.length() / 2);
     }
+
+    // String hashing
+    // Rolling hash function is used, see the following
+    // https://cp-algorithms.com/string/string-hashing.html
+    // https://en.wikipedia.org/wiki/Rolling_hash
+    /*
+        Rolling hashes can be a very powerful way to check for matching sub strings
+        For example, the following problem requires the use of hashing
+        https://open.kattis.com/problems/isomorphicinversion
+     */
+
+    /*
+        Several function from NumberTheory.java are used here, see that file for those implementations.
+     */
+
+    /*  When choosing primes for your hash, I recommend
+            {a} be larger than the alphabet
+            {m} be as large as possible, but less than the square root of Long.MAX_VALUE.
+
+
+        Some choices of primes for {a}
+            31
+            37
+            41
+            53
+            59
+            71
+            73
+        (Note:(long) Char.MAXVALUE = 65535)
+            65537
+            65539
+            65837
+            65881
+            66041
+
+        Some choice of primes for {m}
+            1e9 + 7
+            1e9 + 9
+            1e9 + 21
+            1e9 + 87
+        (Note: floor(sqrt(Long.MAX_VALUE)) = 3_037_000_499)
+        (Integer.MAX_VALUE = 2_147_483_647)
+            2124749677
+            2131131137
+            2147483647 (Yes, Integer.MAX_VALUE is prime)
+
+
+     */
+
+    /*
+        I provided so many options for {a} and {m} above since changing those values yields different hash functions
+        which can be used to guard against collisions in one of the hash functions. I recommend mainly changing the
+        value of {a} for guarding against collisions as small strings might not be affected by the modulus.
+        If you need more primes, see https://t5k.org/curios/ or Prime.java to generate your own.
+     */
+
+    /*
+    The implementation below assumes nothing about the alphabet besides that it will fit inside a Java Character.
+    So the max value I assume is 65535.
+
+    The implementation can easily be changed for various specific alphabets
+    digits '0' : '9'
+        c = c - '0'
+
+    lowercase letters 'a' : 'z'
+        c = c - 'a'
+
+    uppercase letters 'A' : 'Z'
+        c = c - 'A'
+     */
+
+    /*
+        hash(S, a, m) = sum{i=0}{|S|-1} S_i * a^i     % m
+        |S| = size of S
+        S_i is the ith character of S, zero indexed
+    */
+    private static long hash(String s, long a, long m) {
+        long hash = 0; //
+        long ai = 1; // a^i
+        for (int i = 0; i < s.length(); i++) {
+            long cc = s.charAt(i); // can replace with other function if alphabet is known
+            hash += (cc * ai) % m;
+            hash %= m;
+            ai *= a;
+            ai %= m;
+        }
+        return hash;
+    }
+
+    /*
+        Precomputing the powers, and their modular inverse, of {a} can speed up computation.
+     */
+
+    // TODO: Test all of the below functions
+    private static long extendRight(long previousHash, int previousLength, char c, long a, long m) {
+        long ap = NumberTheory.modPow(a, previousLength, m);
+        long hash = ap * c;
+        hash %= m;
+        hash += previousHash;
+        hash %= m;
+        return hash;
+    }
+
+    private static long extendLeft(long previousHash, int previousLength, char c, long a, long m) {
+        long hash = previousHash * a;
+        hash %= m;
+        hash += c;
+        hash %= m;
+        return hash;
+    }
+
+    private static long retractRight(long previousHash, int previousLength, char c, long a, long m) {
+        // assert previousLength >= 1
+        long lastPow = NumberTheory.modPow(a, previousLength - 1, m);
+        long lastTerm = (c * lastPow) % m;
+        long hash = previousHash - lastTerm;
+        hash += m;
+        hash %= m;
+        return hash;
+    }
+
+    private static long retractLeft(long previousHash, int previousLength, char c, long a, long m) {
+        long hash = previousHash - c;
+        hash += m;
+        hash %= m;
+        hash *= NumberTheory.modularInverse(a, m);
+        hash %= m;
+        return hash;
+    }
+
+    private static long shiftRight(long previousHash, int length, char l, char r, long a, long m) {
+        long hash = retractLeft(previousHash, length, l, a, m);
+        hash = extendRight(hash, length - 1, r, a, m);
+        return hash;
+    }
+
+    private static long shiftLeft(long previousHash, int length, char l, char r, long a, long m) {
+        long hash = retractRight(previousHash, length, r, a, m);
+        hash = extendLeft(hash, length - 1, l, a, m);
+        return hash;
+    }
+
+
 }
